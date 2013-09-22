@@ -58,7 +58,7 @@
                     video.height = h;
                     video.loop = video.autoplay = true;
                     video.onclick = 'this.play()';
-                    C.appendChild(video);
+                    C.insertBefore(video, C.firstChild);
                 },
                 x = function x(url, callback, errorcallback) {
 					var xmlhttp = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject("Microsoft.XMLHTTP");

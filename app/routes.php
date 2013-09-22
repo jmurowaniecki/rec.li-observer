@@ -42,16 +42,16 @@ Route::get('/getRemotes', function () {
 	
 	for ($n = $videos; $n < $qtde; $n++) {
 
-		$video = file_get_contents("http://rec.li/" . $n);
-		
-		if (strpos($video, "The page you were looking for doesn't exist (404)")) {
+		$video = @file_get_contents("http://rec.li/" . $n);
+
+		if (strpos($video, "The page you were looking for doesn't exist (404)") || strlen($video) == 0) {
 			break;
 		}
-		
+
 		$video = explode("<video src=\"", $video);
 		$video = explode("\" width", $video[1]);
 		$video = $video[0];
-		
+
 		DB::insert("INSERT INTO videos (number, url) VALUES (?, ?)", array($n, $video));
 	}
 
