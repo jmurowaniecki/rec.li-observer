@@ -13,7 +13,8 @@ class CreateVideosTable extends Migration {
 	{
 		Schema::create('videos', function($table) {
 			$table->increments('id');
-			$table->string('url',140);
+			$table->string('url', 140);
+			$table->integer('number');
 		});
 		//
 	}

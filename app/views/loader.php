@@ -42,32 +42,61 @@
     
     <script>
         (function () {
-            var videos = document.getElementsByTagName('video'),
+            var g = function (e) { return document.getElementsByTagName(e); }
+                videos = g('video'),
                 W = 304,
                 H = 224,
                 w = Math.floor(screen.width / 10),
                 p = w * 100 / W;
                 h = Math.floor(H * p / 100),
-                A = document.getElementsByTagName('a')[0],
-                C = document.getElementsByTagName('div')[0],
+                A = g('a')[0],
+                C = g('div')[0],
                 v = function (url) {
-                	video = document.createElement('video');
-                	video.src = url;
-                	video.width = w;
-                	video.height = h;
-                	video.loop = video.autoplay = true;
-                	video.onclick = 'this.play()';
+                    video = document.createElement('video');
+                    video.src = url;
+                    video.width = w;
+                    video.height = h;
+                    video.loop = video.autoplay = true;
+                    video.onclick = 'this.play()';
                     C.appendChild(video);
-                };
+                },
+                x = function x(url, callback, errorcallback) {
+					var xmlhttp = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject("Microsoft.XMLHTTP");
+					xmlhttp.onreadystatechange = function () {
+						if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+							if (callback !== undefined) {
+								callback(JSON.parse(xmlhttp.responseText));
+							}
+						}
+						else {
+							if (errorcallback !== undefined) {
+								errorcallback();
+							}
+						}
+					}
+					xmlhttp.open("GET", url, true);
+					xmlhttp.send();
+				};
+
             for (i in videos) {
+
                 videos[i].width = w;
                 videos[i].height = h;
             }
-            
+
+            p = 0;
+
             A.onclick = function (e) {
                 e.preventDefault();
+
+                x('getStream/' + p, function (stream) {
                 
-                v('https://s3.amazonaws.com/recli/timelapse/1-1379636513.webm');
+                	for (i in stream) {
+                	
+                		p++;
+                		v(stream[i]);
+                	}
+                });
             }
         })();
     </script>
