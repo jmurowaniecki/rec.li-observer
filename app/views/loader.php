@@ -15,6 +15,7 @@
     videos {
         height:0;
         width:0;
+        background:url('assets/images/loader.gif') no-repeat center center #000!important;
     }
     a {
         display:block;
@@ -34,7 +35,7 @@
 </head>
 <body>
     <a href="#">
-        Load more nonsense data..
+        Click to load more nonsense data..
     </a>
     
     <div>
@@ -61,22 +62,22 @@
                     C.insertBefore(video, C.firstChild);
                 },
                 x = function x(url, callback, errorcallback) {
-					var xmlhttp = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject("Microsoft.XMLHTTP");
-					xmlhttp.onreadystatechange = function () {
-						if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-							if (callback !== undefined) {
-								callback(JSON.parse(xmlhttp.responseText));
-							}
-						}
-						else {
-							if (errorcallback !== undefined) {
-								errorcallback();
-							}
-						}
-					}
-					xmlhttp.open("GET", url, true);
-					xmlhttp.send();
-				};
+                    var xmlhttp = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject("Microsoft.XMLHTTP");
+                    xmlhttp.onreadystatechange = function () {
+                        if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                            if (callback !== undefined) {
+                                callback(JSON.parse(xmlhttp.responseText));
+                            }
+                        }
+                        else {
+                            if (errorcallback !== undefined) {
+                                errorcallback();
+                            }
+                        }
+                    }
+                    xmlhttp.open("GET", url, true);
+                    xmlhttp.send();
+                };
 
             for (i in videos) {
 
@@ -89,14 +90,14 @@
             A.onclick = function (e) {
                 e.preventDefault();
 
-                x('getStream/' + p, function (stream) {
-                
-                	for (i in stream) {
-                	
-                		p++;
-                		v(stream[i]);
-                	}
-                });
+                setTimeout(x('getStream/' + p, function (stream) {
+
+                    for (i in stream) {
+
+                        p++;
+                        v(stream[i]);
+                    }
+                }), 1000);
             }
         })();
     </script>
