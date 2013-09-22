@@ -77,26 +77,35 @@
                     }
                     xmlhttp.open("GET", url, true);
                     xmlhttp.send();
+                },
+                r = function () {
+                    qtde = (Math.floor(screen.height / h) * 10);
+                    remove = C.children.length - qtde;
+
+                    if (remove > 0) {
+                        do {
+                            e = C.children.length - remove;
+                            R = C.children[e];
+                            R.remove();
+                        } while (--remove);
+                    }
+
                 };
 
             for (i in videos) {
-
-                videos[i].width = w;
+                videos[i].width  = w;
                 videos[i].height = h;
             }
 
             p = 0;
-
             A.onclick = function (e) {
                 e.preventDefault();
-
                 setTimeout(x('getStream/' + p, function (stream) {
-
                     for (i in stream) {
-
                         p++;
                         v(stream[i]);
                     }
+                    r();
                 }), 1000);
             }
         })();
